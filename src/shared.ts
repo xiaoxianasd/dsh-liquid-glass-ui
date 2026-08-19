@@ -10,9 +10,15 @@ export const MAX_IMAGE_BYTES = 4 * 1024 * 1024
 export const BACKGROUND_SIZES = ['cover', 'contain', 'auto'] as const
 export type BackgroundSize = typeof BACKGROUND_SIZES[number]
 
+/** Supported destinations for the opt-in thinking redirect. */
+export const ENTERTAINMENT_TARGETS = ['douyin', 'bilibili'] as const
+export type EntertainmentTarget = typeof ENTERTAINMENT_TARGETS[number]
+
 /** User-configurable glass appearance. */
 export interface Config {
   enabled?: boolean
+  autoRedirectEnabled?: boolean
+  autoRedirectTarget?: EntertainmentTarget
   backgroundImage?: string
   backgroundSize?: BackgroundSize
   backgroundPosition?: string
@@ -23,6 +29,8 @@ export interface Config {
 /** Stable defaults used by the schema, settings form, and tests. */
 export const DEFAULT_CONFIG = Object.freeze({
   enabled: true,
+  autoRedirectEnabled: false,
+  autoRedirectTarget: 'bilibili' as const,
   backgroundImage: '',
   backgroundSize: 'cover' as const,
   backgroundPosition: 'center center',
@@ -34,6 +42,8 @@ export const DEFAULT_CONFIG = Object.freeze({
 export function resolveConfig(config: Config | undefined): Required<Config> {
   return {
     enabled: config?.enabled ?? DEFAULT_CONFIG.enabled,
+    autoRedirectEnabled: config?.autoRedirectEnabled ?? DEFAULT_CONFIG.autoRedirectEnabled,
+    autoRedirectTarget: config?.autoRedirectTarget ?? DEFAULT_CONFIG.autoRedirectTarget,
     backgroundImage: config?.backgroundImage ?? DEFAULT_CONFIG.backgroundImage,
     backgroundSize: config?.backgroundSize ?? DEFAULT_CONFIG.backgroundSize,
     backgroundPosition: config?.backgroundPosition ?? DEFAULT_CONFIG.backgroundPosition,

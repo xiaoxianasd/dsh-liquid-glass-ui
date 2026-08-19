@@ -47,6 +47,7 @@ body[data-dsh-liquid-glass] :where([role="dialog"], [role="menu"], [role="listbo
 .dsh-lg-body { display: grid; gap: 18px; padding: 20px; border-top: 1px solid var(--dsw-alias-border-l1); }
 .dsh-lg-switch { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .dsh-lg-field { display: grid; gap: 7px; }
+.dsh-lg-section { display: grid; gap: 14px; padding: 16px; border: 1px solid var(--dsw-alias-border-l1); border-radius: 14px; }
 .dsh-lg-label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .dsh-lg-label { font-size: 14px; font-weight: 600; }
 .dsh-lg-value, .dsh-lg-hint, .dsh-lg-status { color: var(--dsw-alias-label-secondary); font-size: 12px; }

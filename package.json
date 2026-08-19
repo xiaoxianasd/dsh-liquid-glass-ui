@@ -1,6 +1,6 @@
 {
   "name": "dsh-liquid-glass-ui",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Custom backgrounds and iOS-inspired liquid glass transparency for the DeepSeek Harness Web UI.",
   "type": "module",
   "author": "xiaoxianasd",

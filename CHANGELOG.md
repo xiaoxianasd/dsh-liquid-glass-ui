@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+- Add an opt-in redirect when the current DSH session starts thinking.
+- Let users choose Douyin or Bilibili as the destination.
+- Detect the official current-session `running` edge and trigger once per turn.
+
 ## 0.1.2
 
 - Remove backdrop blur, saturation filters, and the high-quality rendering toggle entirely.

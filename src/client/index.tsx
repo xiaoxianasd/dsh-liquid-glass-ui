@@ -10,12 +10,15 @@ import {
   APPEARANCE_NAMESPACE,
   BACKGROUND_SIZES,
   DEFAULT_CONFIG,
+  ENTERTAINMENT_TARGETS,
   MAX_IMAGE_BYTES,
   resolveConfig,
   type BackgroundSize,
   type Config,
+  type EntertainmentTarget,
 } from '../shared.js'
 import { createAppearance, cssImageValue } from '../appearance.js'
+import { createCurrentRunningEdgeTracker, entertainmentUrl } from './auto-redirect.js'
 import { STYLE } from './styles.js'
 
 interface SettingsFace { scope: SettingsScope<Config> }
@@ -29,7 +32,7 @@ const BODY_PROPERTIES = [
 ] as const
 
 /** Required browser services. */
-export const inject = ['slots', 'settingsScope', 'theme']
+export const inject = ['slots', 'settingsScope', 'theme', 'sessions']
 
 /** Mount global appearance state and its Settings > Plugins card. */
 export function apply(ctx: Context): void {
@@ -70,6 +73,16 @@ export function apply(ctx: Context): void {
       style.remove()
     }
   }, 'dsh-liquid-glass-ui: appearance')
+
+  ctx.effect(() => {
+    const tracker = createCurrentRunningEdgeTracker(ctx.sessions.list.getSnapshot())
+    return ctx.sessions.list.subscribe(() => {
+      if (!tracker(ctx.sessions.list.getSnapshot())) return
+      const config = resolveConfig(scope.getSnapshot().value)
+      if (!config.autoRedirectEnabled) return
+      window.location.assign(entertainmentUrl(config.autoRedirectTarget))
+    })
+  }, 'dsh-liquid-glass-ui: thinking redirect')
 
   const register = ctx.slots.register.bind(ctx.slots) as unknown as (options: object, component: unknown) => () => void
   ctx.slots.inject('settings.plugin.item', () => register({
@@ -124,6 +137,8 @@ export function LiquidGlassSettingsCard(props: SettingsCardProps) {
     setMessage('')
     try {
       await props.scope.set('enabled', draft.enabled)
+      await props.scope.set('autoRedirectEnabled', draft.autoRedirectEnabled)
+      await props.scope.set('autoRedirectTarget', draft.autoRedirectTarget)
       await props.scope.set('backgroundImage', draft.backgroundImage.trim())
       await props.scope.set('backgroundSize', draft.backgroundSize)
       await props.scope.set('backgroundPosition', draft.backgroundPosition.trim() || DEFAULT_CONFIG.backgroundPosition)
@@ -145,11 +160,17 @@ export function LiquidGlassSettingsCard(props: SettingsCardProps) {
   return (
     <li className="dsh-lg-card">
       <button type="button" className="dsh-lg-head" aria-expanded={open} onClick={() => { setOpen(value => !value) }}>
-        <span><span className="dsh-lg-title">液态玻璃外观</span><span className="dsh-lg-desc">自定义背景与 UI 透明度，营造 iOS 风格玻璃质感。</span></span>
+        <span><span className="dsh-lg-title">液态玻璃与思考跳转</span><span className="dsh-lg-desc">自定义轻量透明外观，并在思考开始时跳转到娱乐平台。</span></span>
         <span aria-hidden="true">{open ? '⌃' : '⌄'}</span>
       </button>
       {open ? <form className="dsh-lg-body" onSubmit={(event) => { void save(event) }}>
         <label className="dsh-lg-switch"><span><span className="dsh-lg-label">启用液态玻璃</span><span className="dsh-lg-desc">关闭后立即恢复 DSH 原始主题。</span></span><input type="checkbox" checked={draft.enabled} onChange={event => { update('enabled', event.target.checked) }} /></label>
+
+        <section className="dsh-lg-section" aria-labelledby="dsh-lg-redirect-title">
+          <div><span id="dsh-lg-redirect-title" className="dsh-lg-label">思考时自动跳转</span><span className="dsh-lg-desc">当前会话每次从空闲进入思考时，跳转当前标签页；按浏览器后退可返回 DSH。</span></div>
+          <label className="dsh-lg-switch"><span className="dsh-lg-label">启用自动跳转</span><input type="checkbox" checked={draft.autoRedirectEnabled} onChange={event => { update('autoRedirectEnabled', event.target.checked) }} /></label>
+          <label className="dsh-lg-field"><span className="dsh-lg-label">跳转平台</span><select className="dsh-lg-input" value={draft.autoRedirectTarget} onChange={event => { update('autoRedirectTarget', event.target.value as EntertainmentTarget) }}>{ENTERTAINMENT_TARGETS.map(target => <option key={target} value={target}>{target === 'douyin' ? '抖音网页版' : '哔哩哔哩网页版'}</option>)}</select></label>
+        </section>
 
         <div className="dsh-lg-preview" style={previewStyle} aria-label="玻璃效果预览"><div className="dsh-lg-preview-glass">Liquid Glass · 轻量预览</div></div>
 
