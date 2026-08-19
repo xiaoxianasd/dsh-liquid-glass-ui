@@ -13,7 +13,7 @@ Custom backgrounds and iOS-inspired liquid glass transparency for the DeepSeek H
 - Persist settings through the native DSH user-settings service.
 - Compose with the native light/dark theme through `theme.overrideTokens()` and cleanly restore it when disabled or uninstalled.
 - Avoid global relational selectors and fixed-background repainting during streaming output.
-- Optionally redirect the current browser tab to Douyin or Bilibili when the current DSH session starts a new thinking turn.
+- Optionally open Douyin or Bilibili in a separate browser tab when the current DSH session starts a new thinking turn, without replacing DSH.
 
 ## Install
 
@@ -51,7 +51,7 @@ The package intentionally declares DSH `0.1.0-rc.7` as its minimum compatible re
 
 - A remote background URL is fetched directly by the browser and may disclose the DSH user's IP address to that image host.
 - Local images stay in the DSH settings document as data URLs; the plugin does not upload them to an external service.
-- The thinking redirect is disabled by default. When enabled, the selected entertainment site receives an ordinary browser visit and its normal network metadata.
+- The thinking redirect is disabled by default. When enabled, the selected entertainment site receives an ordinary browser visit and its normal network metadata. The browser must allow pop-ups for the DSH site.
 - Avoid sensitive images on shared machines, and follow the access controls of the configured DSH settings provider.
 
 ## License

@@ -18,7 +18,7 @@ import {
   type EntertainmentTarget,
 } from '../shared.js'
 import { createAppearance, cssImageValue } from '../appearance.js'
-import { createCurrentRunningEdgeTracker, entertainmentUrl } from './auto-redirect.js'
+import { createCurrentRunningEdgeTracker, openEntertainmentPage } from './auto-redirect.js'
 import { STYLE } from './styles.js'
 
 interface SettingsFace { scope: SettingsScope<Config> }
@@ -80,7 +80,7 @@ export function apply(ctx: Context): void {
       if (!tracker(ctx.sessions.list.getSnapshot())) return
       const config = resolveConfig(scope.getSnapshot().value)
       if (!config.autoRedirectEnabled) return
-      window.location.assign(entertainmentUrl(config.autoRedirectTarget))
+      openEntertainmentPage(config.autoRedirectTarget)
     })
   }, 'dsh-liquid-glass-ui: thinking redirect')
 
@@ -167,7 +167,7 @@ export function LiquidGlassSettingsCard(props: SettingsCardProps) {
         <label className="dsh-lg-switch"><span><span className="dsh-lg-label">启用液态玻璃</span><span className="dsh-lg-desc">关闭后立即恢复 DSH 原始主题。</span></span><input type="checkbox" checked={draft.enabled} onChange={event => { update('enabled', event.target.checked) }} /></label>
 
         <section className="dsh-lg-section" aria-labelledby="dsh-lg-redirect-title">
-          <div><span id="dsh-lg-redirect-title" className="dsh-lg-label">思考时自动跳转</span><span className="dsh-lg-desc">当前会话每次从空闲进入思考时，跳转当前标签页；按浏览器后退可返回 DSH。</span></div>
+          <div><span id="dsh-lg-redirect-title" className="dsh-lg-label">思考时自动打开网页</span><span className="dsh-lg-desc">当前会话每次从空闲进入思考时，在新标签页打开所选平台，当前 DSH 页面保持不变。浏览器需允许此站点弹出窗口。</span></div>
           <label className="dsh-lg-switch"><span className="dsh-lg-label">启用自动跳转</span><input type="checkbox" checked={draft.autoRedirectEnabled} onChange={event => { update('autoRedirectEnabled', event.target.checked) }} /></label>
           <label className="dsh-lg-field"><span className="dsh-lg-label">跳转平台</span><select className="dsh-lg-input" value={draft.autoRedirectTarget} onChange={event => { update('autoRedirectTarget', event.target.value as EntertainmentTarget) }}>{ENTERTAINMENT_TARGETS.map(target => <option key={target} value={target}>{target === 'douyin' ? '抖音网页版' : '哔哩哔哩网页版'}</option>)}</select></label>
         </section>

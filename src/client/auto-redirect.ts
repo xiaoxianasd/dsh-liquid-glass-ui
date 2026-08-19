@@ -22,6 +22,14 @@ export function entertainmentUrl(target: EntertainmentTarget): string {
   return ENTERTAINMENT_URLS[target]
 }
 
+/** Open the selected site in a separate browser tab without exposing window.opener. */
+export function openEntertainmentPage(
+  target: EntertainmentTarget,
+  openPage: (url: string, target: string, features: string) => unknown = (url, windowTarget, features) => window.open(url, windowTarget, features),
+): void {
+  openPage(entertainmentUrl(target), '_blank', 'noopener,noreferrer')
+}
+
 /**
  * Track official session running-state edges. Selection of an already-running
  * session does not count as a new thinking start.

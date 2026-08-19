@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- Open the selected entertainment site in a separate protected browser tab.
+- Keep the current DSH page open and document the browser pop-up permission requirement.
+
 ## 0.2.0
 
 - Add an opt-in redirect when the current DSH session starts thinking.

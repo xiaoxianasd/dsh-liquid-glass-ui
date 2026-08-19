@@ -3,7 +3,7 @@ import { Config } from '../src/config.js'
 import { DEFAULT_CONFIG, resolveConfig } from '../src/shared.js'
 import { createAppearance, cssImageValue } from '../src/appearance.js'
 import { STYLE } from '../src/client/styles.js'
-import { createCurrentRunningEdgeTracker, entertainmentUrl } from '../src/client/auto-redirect.js'
+import { createCurrentRunningEdgeTracker, entertainmentUrl, openEntertainmentPage } from '../src/client/auto-redirect.js'
 
 describe('liquid glass configuration', () => {
   it('resolves stable defaults', () => {
@@ -53,5 +53,11 @@ describe('liquid glass configuration', () => {
   it('maps only supported entertainment targets', () => {
     expect(entertainmentUrl('douyin')).toBe('https://www.douyin.com/')
     expect(entertainmentUrl('bilibili')).toBe('https://www.bilibili.com/')
+  })
+
+  it('opens entertainment in a separate protected browser tab', () => {
+    const calls: string[][] = []
+    openEntertainmentPage('bilibili', (...args) => { calls.push(args) })
+    expect(calls).toEqual([['https://www.bilibili.com/', '_blank', 'noopener,noreferrer']])
   })
 })
