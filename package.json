@@ -1,0 +1,115 @@
+{
+  "name": "dsh-liquid-glass-ui",
+  "version": "0.1.0",
+  "description": "Custom backgrounds and iOS-inspired liquid glass transparency for the DeepSeek Harness Web UI.",
+  "type": "module",
+  "author": "xiaoxianasd",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoxianasd/dsh-liquid-glass-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xiaoxianasd/dsh-liquid-glass-ui/issues"
+  },
+  "homepage": "https://github.com/xiaoxianasd/dsh-liquid-glass-ui#readme",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/client.js.map",
+    "lib/types/**/*.d.ts",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-settings-plugins",
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-theme"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc && tsdown",
+    "prepare": "pnpm run build",
+    "test": "vitest run",
+    "check": "pnpm run typecheck && pnpm run test && pnpm run build && pnpm run pack:check",
+    "pack:check": "pnpm pack --dry-run"
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "liquid-glass",
+    "glassmorphism",
+    "theme",
+    "background",
+    "appearance",
+    "ui",
+    "cordis"
+  ],
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.0 <5",
+    "@deepseek-ai/dsh-api-remotes": ">=0.1.0-rc.7 <0.2.0",
+    "@deepseek-ai/dsh-client-connection": ">=0.1.0-rc.7 <0.2.0",
+    "@deepseek-ai/dsh-client-runtime": ">=0.1.0-rc.7 <0.2.0",
+    "@deepseek-ai/dsh-client-ui-settings": ">=0.1.0-rc.7 <0.2.0",
+    "@deepseek-ai/dsh-client-ui-settings-plugins": ">=0.1.0-rc.7 <0.2.0",
+    "@deepseek-ai/dsh-client-ui-slots": ">=0.1.0-rc.7 <0.2.0",
+    "@deepseek-ai/dsh-client-ui-theme": ">=0.1.0-rc.7 <0.2.0",
+    "@deepseek-ai/dsh-settings": ">=0.1.0-rc.7 <0.2.0",
+    "@deepseek-ai/schemastery": ">=3.18.0 <4",
+    "react": ">=18.2.0 <19"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "4.0.1",
+    "@deepseek-ai/dsh-api-remotes": "0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-connection": "0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-runtime": "0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-ui-settings": "0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-ui-settings-plugins": "0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-ui-slots": "0.1.0-rc.7",
+    "@deepseek-ai/dsh-client-ui-theme": "0.1.0-rc.7",
+    "@deepseek-ai/dsh-settings": "0.1.0-rc.7",
+    "@deepseek-ai/schemastery": "3.18.1",
+    "@types/node": "^22.20.0",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  },
+  "packageManager": "pnpm@11.7.0"
+}

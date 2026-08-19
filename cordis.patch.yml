@@ -1,0 +1,5 @@
+- insert:
+    - id: liquid-glass-ui
+      name: dsh-liquid-glass-ui
+      config:
+        enabled: true
