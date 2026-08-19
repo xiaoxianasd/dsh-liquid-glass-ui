@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { Config } from '../src/config.js'
 import { DEFAULT_CONFIG, resolveConfig } from '../src/shared.js'
 import { createAppearance, cssImageValue } from '../src/appearance.js'
+import { STYLE } from '../src/client/styles.js'
 
 describe('liquid glass configuration', () => {
   it('resolves stable defaults', () => {
@@ -23,8 +24,9 @@ describe('liquid glass configuration', () => {
   })
 
   it('creates paired light and dark semantic token overrides', () => {
-    const appearance = createAppearance({ surfaceOpacity: 0.3, blur: 12 })
+    const appearance = createAppearance({ surfaceOpacity: 0.3, blur: 12, enableBackdropBlur: true })
     expect(appearance.body.blur).toBe('12px')
+    expect(appearance.body.enableBackdropBlur).toBe(true)
     expect(appearance.tokens['--dsw-alias-bg-layer-1']).toEqual({
       light: 'rgba(255, 255, 255, 0.3)',
       dark: 'rgba(17, 20, 27, 0.3)',
@@ -32,5 +34,12 @@ describe('liquid glass configuration', () => {
     for (const token of Object.values(appearance.tokens)) {
       expect(token).toEqual({ light: expect.any(String), dark: expect.any(String) })
     }
+  })
+
+  it('keeps expensive backdrop effects opt-in', () => {
+    expect(createAppearance(undefined).body.enableBackdropBlur).toBe(false)
+    expect(STYLE).not.toContain(':has(')
+    expect(STYLE).not.toContain('background-attachment: fixed')
+    expect(STYLE).toContain('[data-dsh-lg-backdrop]')
   })
 })

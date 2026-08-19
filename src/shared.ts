@@ -13,6 +13,7 @@ export type BackgroundSize = typeof BACKGROUND_SIZES[number]
 /** User-configurable glass appearance. */
 export interface Config {
   enabled?: boolean
+  enableBackdropBlur?: boolean
   backgroundImage?: string
   backgroundSize?: BackgroundSize
   backgroundPosition?: string
@@ -25,11 +26,12 @@ export interface Config {
 /** Stable defaults used by the schema, settings form, and tests. */
 export const DEFAULT_CONFIG = Object.freeze({
   enabled: true,
+  enableBackdropBlur: false,
   backgroundImage: '',
   backgroundSize: 'cover' as const,
   backgroundPosition: 'center center',
   surfaceOpacity: 0.24,
-  blur: 24,
+  blur: 10,
   saturation: 1.35,
   backgroundDim: 0.18,
 })
@@ -38,6 +40,7 @@ export const DEFAULT_CONFIG = Object.freeze({
 export function resolveConfig(config: Config | undefined): Required<Config> {
   return {
     enabled: config?.enabled ?? DEFAULT_CONFIG.enabled,
+    enableBackdropBlur: config?.enableBackdropBlur ?? DEFAULT_CONFIG.enableBackdropBlur,
     backgroundImage: config?.backgroundImage ?? DEFAULT_CONFIG.backgroundImage,
     backgroundSize: config?.backgroundSize ?? DEFAULT_CONFIG.backgroundSize,
     backgroundPosition: config?.backgroundPosition ?? DEFAULT_CONFIG.backgroundPosition,

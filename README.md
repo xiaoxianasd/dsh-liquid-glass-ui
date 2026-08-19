@@ -7,11 +7,12 @@ Custom backgrounds and iOS-inspired liquid glass transparency for the DeepSeek H
 ## Features
 
 - Choose a remote background URL or upload a local image (stored as a data URL, up to 4 MB).
-- Adjust glass opacity, backdrop blur, saturation, background dimming, size, and position.
+- Adjust glass opacity, optional backdrop blur, saturation, background dimming, size, and position.
+- Use lightweight glass by default; high-quality live blur is opt-in and limited to transient dialogs and menus.
 - Preview changes in the settings card before saving.
 - Persist settings through the native DSH user-settings service.
 - Compose with the native light/dark theme through `theme.overrideTokens()` and cleanly restore it when disabled or uninstalled.
-- Respect the browser's reduced-motion preference.
+- Avoid global relational selectors and fixed-background repainting during streaming output.
 
 ## Install
 

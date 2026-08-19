@@ -13,11 +13,10 @@ body[data-dsh-liquid-glass] {
   background-position: center, var(--dsh-lg-position), center, center, center, center;
   background-size: cover, var(--dsh-lg-size), cover, cover, cover, cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-attachment: scroll;
 }
 
-body[data-dsh-liquid-glass] :has(> [data-shell-overlay]),
-body[data-dsh-liquid-glass] :where([role="dialog"], [role="menu"], [role="listbox"]) {
+body[data-dsh-liquid-glass][data-dsh-lg-backdrop] :where([role="dialog"], [role="menu"], [role="listbox"]) {
   -webkit-backdrop-filter: blur(var(--dsh-lg-blur)) saturate(var(--dsh-lg-saturation));
   backdrop-filter: blur(var(--dsh-lg-blur)) saturate(var(--dsh-lg-saturation));
 }
@@ -102,16 +101,16 @@ body[data-dsh-liquid-glass] :where([role="dialog"], [role="menu"], [role="listbo
   padding: 14px;
   border: 1px solid rgba(255,255,255,.4);
   border-radius: 14px;
-  background: rgba(255,255,255,var(--dsh-lg-preview-opacity));
-  -webkit-backdrop-filter: blur(var(--dsh-lg-preview-blur)) saturate(var(--dsh-lg-preview-saturation));
-  backdrop-filter: blur(var(--dsh-lg-preview-blur)) saturate(var(--dsh-lg-preview-saturation));
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.04)),
+    rgba(255,255,255,var(--dsh-lg-preview-opacity));
   box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 10px 30px rgba(0,0,0,.16);
   color: #10141d;
   font-size: 13px;
   font-weight: 650;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .dsh-lg-card *, body[data-dsh-liquid-glass] * { transition: none !important; }
+.dsh-lg-preview[data-dsh-lg-backdrop] .dsh-lg-preview-glass {
+  -webkit-backdrop-filter: blur(var(--dsh-lg-preview-blur)) saturate(var(--dsh-lg-preview-saturation));
+  backdrop-filter: blur(var(--dsh-lg-preview-blur)) saturate(var(--dsh-lg-preview-saturation));
 }
 `

@@ -6,6 +6,7 @@ import { resolveConfig } from './shared.js'
 /** CSS properties written directly to the body by this plugin. */
 export interface BodyAppearance {
   enabled: boolean
+  enableBackdropBlur: boolean
   image: string
   size: string
   position: string
@@ -41,6 +42,7 @@ export function createAppearance(config: Config | undefined): {
   return {
     body: {
       enabled: value.enabled,
+      enableBackdropBlur: value.enableBackdropBlur,
       image: cssImageValue(value.backgroundImage),
       size: value.backgroundSize,
       position: value.backgroundPosition,
