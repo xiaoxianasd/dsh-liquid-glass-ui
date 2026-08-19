@@ -7,12 +7,9 @@ export * from './shared.js'
 /** Cordis settings schema with bounds for every numeric visual control. */
 export const Config: z<ConfigValue> = z.object({
   enabled: z.boolean().default(DEFAULT_CONFIG.enabled),
-  enableBackdropBlur: z.boolean().default(DEFAULT_CONFIG.enableBackdropBlur),
   backgroundImage: z.string().default(DEFAULT_CONFIG.backgroundImage),
   backgroundSize: z.union(BACKGROUND_SIZES).default(DEFAULT_CONFIG.backgroundSize),
   backgroundPosition: z.string().default(DEFAULT_CONFIG.backgroundPosition),
   surfaceOpacity: z.number().min(0.05).max(0.95).default(DEFAULT_CONFIG.surfaceOpacity),
-  blur: z.number().min(0).max(60).default(DEFAULT_CONFIG.blur),
-  saturation: z.number().min(0.5).max(2).default(DEFAULT_CONFIG.saturation),
   backgroundDim: z.number().min(0).max(0.7).default(DEFAULT_CONFIG.backgroundDim),
 })

@@ -12,8 +12,6 @@ describe('liquid glass configuration', () => {
 
   it('rejects visual values outside supported bounds', () => {
     expect(() => Config({ surfaceOpacity: 0 })).toThrow()
-    expect(() => Config({ blur: 61 })).toThrow()
-    expect(() => Config({ saturation: 2.1 })).toThrow()
     expect(() => Config({ backgroundDim: 0.71 })).toThrow()
   })
 
@@ -24,9 +22,7 @@ describe('liquid glass configuration', () => {
   })
 
   it('creates paired light and dark semantic token overrides', () => {
-    const appearance = createAppearance({ surfaceOpacity: 0.3, blur: 12, enableBackdropBlur: true })
-    expect(appearance.body.blur).toBe('12px')
-    expect(appearance.body.enableBackdropBlur).toBe(true)
+    const appearance = createAppearance({ surfaceOpacity: 0.3 })
     expect(appearance.tokens['--dsw-alias-bg-layer-1']).toEqual({
       light: 'rgba(255, 255, 255, 0.3)',
       dark: 'rgba(17, 20, 27, 0.3)',
@@ -36,10 +32,10 @@ describe('liquid glass configuration', () => {
     }
   })
 
-  it('keeps expensive backdrop effects opt-in', () => {
-    expect(createAppearance(undefined).body.enableBackdropBlur).toBe(false)
+  it('does not ship expensive backdrop effects', () => {
     expect(STYLE).not.toContain(':has(')
     expect(STYLE).not.toContain('background-attachment: fixed')
-    expect(STYLE).toContain('[data-dsh-lg-backdrop]')
+    expect(STYLE).not.toContain('backdrop-filter')
+    expect(STYLE).not.toContain('filter: blur')
   })
 })

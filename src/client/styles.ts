@@ -6,19 +6,11 @@ body[data-dsh-liquid-glass] {
   background-image:
     linear-gradient(rgba(5, 8, 14, var(--dsh-lg-dim)), rgba(5, 8, 14, var(--dsh-lg-dim))),
     var(--dsh-lg-image),
-    radial-gradient(circle at 15% 15%, #78a7ff 0, transparent 38%),
-    radial-gradient(circle at 85% 18%, #d08cff 0, transparent 34%),
-    radial-gradient(circle at 55% 92%, #59d9c2 0, transparent 42%),
     linear-gradient(135deg, #1b2740, #10141d 58%, #261b36);
-  background-position: center, var(--dsh-lg-position), center, center, center, center;
-  background-size: cover, var(--dsh-lg-size), cover, cover, cover, cover;
+  background-position: center, var(--dsh-lg-position), center;
+  background-size: cover, var(--dsh-lg-size), cover;
   background-repeat: no-repeat;
   background-attachment: scroll;
-}
-
-body[data-dsh-liquid-glass][data-dsh-lg-backdrop] :where([role="dialog"], [role="menu"], [role="listbox"]) {
-  -webkit-backdrop-filter: blur(var(--dsh-lg-blur)) saturate(var(--dsh-lg-saturation));
-  backdrop-filter: blur(var(--dsh-lg-blur)) saturate(var(--dsh-lg-saturation));
 }
 
 body[data-dsh-liquid-glass] :where([role="dialog"], [role="menu"], [role="listbox"]) {
@@ -108,9 +100,5 @@ body[data-dsh-liquid-glass] :where([role="dialog"], [role="menu"], [role="listbo
   color: #10141d;
   font-size: 13px;
   font-weight: 650;
-}
-.dsh-lg-preview[data-dsh-lg-backdrop] .dsh-lg-preview-glass {
-  -webkit-backdrop-filter: blur(var(--dsh-lg-preview-blur)) saturate(var(--dsh-lg-preview-saturation));
-  backdrop-filter: blur(var(--dsh-lg-preview-blur)) saturate(var(--dsh-lg-preview-saturation));
 }
 `

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- Remove backdrop blur, saturation filters, and the high-quality rendering toggle entirely.
+- Simplify the page background from six paint layers to three static layers.
+- Remove blur-related settings so every configuration follows the lightweight rendering path.
+
 ## 0.1.1
 
 - Add an opt-in high-quality backdrop blur control.

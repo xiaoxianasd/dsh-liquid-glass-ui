@@ -25,8 +25,6 @@ const BODY_PROPERTIES = [
   '--dsh-lg-image',
   '--dsh-lg-size',
   '--dsh-lg-position',
-  '--dsh-lg-blur',
-  '--dsh-lg-saturation',
   '--dsh-lg-dim',
 ] as const
 
@@ -46,17 +44,13 @@ export function apply(ctx: Context): void {
     const body = document.body
     if (!appearance.body.enabled) {
       body.removeAttribute('data-dsh-liquid-glass')
-      body.removeAttribute('data-dsh-lg-backdrop')
       for (const property of BODY_PROPERTIES) body.style.removeProperty(property)
       return
     }
     body.setAttribute('data-dsh-liquid-glass', '')
-    body.toggleAttribute('data-dsh-lg-backdrop', appearance.body.enableBackdropBlur)
     body.style.setProperty('--dsh-lg-image', appearance.body.image)
     body.style.setProperty('--dsh-lg-size', appearance.body.size)
     body.style.setProperty('--dsh-lg-position', appearance.body.position)
-    body.style.setProperty('--dsh-lg-blur', appearance.body.blur)
-    body.style.setProperty('--dsh-lg-saturation', appearance.body.saturation)
     body.style.setProperty('--dsh-lg-dim', appearance.body.dim)
     disposeTokens = theme.overrideTokens('dsh-liquid-glass-ui', appearance.tokens)
   }
@@ -72,7 +66,6 @@ export function apply(ctx: Context): void {
       unsubscribe()
       disposeTokens?.()
       document.body.removeAttribute('data-dsh-liquid-glass')
-      document.body.removeAttribute('data-dsh-lg-backdrop')
       for (const property of BODY_PROPERTIES) document.body.style.removeProperty(property)
       style.remove()
     }
@@ -103,8 +96,6 @@ export function LiquidGlassSettingsCard(props: SettingsCardProps) {
     '--dsh-lg-preview-size': draft.backgroundSize,
     '--dsh-lg-preview-position': draft.backgroundPosition,
     '--dsh-lg-preview-opacity': String(draft.surfaceOpacity),
-    '--dsh-lg-preview-blur': `${String(draft.blur)}px`,
-    '--dsh-lg-preview-saturation': String(draft.saturation),
   }) as CSSProperties, [draft])
 
   const update = <K extends keyof Required<Config>>(key: K, value: Required<Config>[K]): void => {
@@ -133,13 +124,10 @@ export function LiquidGlassSettingsCard(props: SettingsCardProps) {
     setMessage('')
     try {
       await props.scope.set('enabled', draft.enabled)
-      await props.scope.set('enableBackdropBlur', draft.enableBackdropBlur)
       await props.scope.set('backgroundImage', draft.backgroundImage.trim())
       await props.scope.set('backgroundSize', draft.backgroundSize)
       await props.scope.set('backgroundPosition', draft.backgroundPosition.trim() || DEFAULT_CONFIG.backgroundPosition)
       await props.scope.set('surfaceOpacity', draft.surfaceOpacity)
-      await props.scope.set('blur', draft.blur)
-      await props.scope.set('saturation', draft.saturation)
       await props.scope.set('backgroundDim', draft.backgroundDim)
       setMessage('外观已保存并实时应用。')
     } catch (cause) {
@@ -163,19 +151,13 @@ export function LiquidGlassSettingsCard(props: SettingsCardProps) {
       {open ? <form className="dsh-lg-body" onSubmit={(event) => { void save(event) }}>
         <label className="dsh-lg-switch"><span><span className="dsh-lg-label">启用液态玻璃</span><span className="dsh-lg-desc">关闭后立即恢复 DSH 原始主题。</span></span><input type="checkbox" checked={draft.enabled} onChange={event => { update('enabled', event.target.checked) }} /></label>
 
-        <div className="dsh-lg-preview" data-dsh-lg-backdrop={draft.enableBackdropBlur ? '' : undefined} style={previewStyle} aria-label="玻璃效果预览"><div className="dsh-lg-preview-glass">Liquid Glass · 实时预览</div></div>
+        <div className="dsh-lg-preview" style={previewStyle} aria-label="玻璃效果预览"><div className="dsh-lg-preview-glass">Liquid Glass · 轻量预览</div></div>
 
         <label className="dsh-lg-field"><span className="dsh-lg-label">背景图片 URL</span><input className="dsh-lg-input" type="text" value={draft.backgroundImage.startsWith('data:') ? '' : draft.backgroundImage} placeholder={draft.backgroundImage.startsWith('data:') ? '已使用本地图片' : 'https://example.com/background.jpg'} onChange={event => { update('backgroundImage', event.target.value) }} /><span className="dsh-lg-hint">支持 http(s) URL；远程服务器需允许浏览器加载该图片。</span></label>
 
         <div className="dsh-lg-field"><span className="dsh-lg-label">或上传本地图片</span><div className="dsh-lg-upload"><input className="dsh-lg-file" type="file" accept="image/*" onChange={(event) => { void onFile(event) }} /><button type="button" className="dsh-lg-btn" disabled={draft.backgroundImage.length === 0} onClick={() => { update('backgroundImage', '') }}>移除背景</button></div><span className="dsh-lg-hint">图片会作为 data URL 保存在 DSH 用户设置中，大小上限 4 MB。</span></div>
 
         <label className="dsh-lg-field"><span className="dsh-lg-label-row"><span className="dsh-lg-label">玻璃不透明度</span><span className="dsh-lg-value">{Math.round(draft.surfaceOpacity * 100)}%</span></span><input className="dsh-lg-range" type="range" min="0.05" max="0.95" step="0.01" value={draft.surfaceOpacity} onChange={event => { update('surfaceOpacity', Number(event.target.value)) }} /><span className="dsh-lg-hint">数值越低越透明，文字可读性也会相应降低。</span></label>
-
-        <label className="dsh-lg-switch"><span><span className="dsh-lg-label">高质量实时模糊</span><span className="dsh-lg-desc">默认关闭以保持流畅；开启后仅模糊弹窗和菜单，可能增加 GPU 占用。</span></span><input type="checkbox" checked={draft.enableBackdropBlur} onChange={event => { update('enableBackdropBlur', event.target.checked) }} /></label>
-
-        <label className="dsh-lg-field"><span className="dsh-lg-label-row"><span className="dsh-lg-label">背景模糊</span><span className="dsh-lg-value">{draft.blur}px</span></span><input className="dsh-lg-range" type="range" min="0" max="32" step="1" value={Math.min(draft.blur, 32)} disabled={!draft.enableBackdropBlur} onChange={event => { update('blur', Number(event.target.value)) }} /><span className="dsh-lg-hint">仅在开启“高质量实时模糊”时生效。</span></label>
-
-        <label className="dsh-lg-field"><span className="dsh-lg-label-row"><span className="dsh-lg-label">色彩饱和度</span><span className="dsh-lg-value">{Math.round(draft.saturation * 100)}%</span></span><input className="dsh-lg-range" type="range" min="0.5" max="2" step="0.05" value={draft.saturation} disabled={!draft.enableBackdropBlur} onChange={event => { update('saturation', Number(event.target.value)) }} /></label>
 
         <label className="dsh-lg-field"><span className="dsh-lg-label-row"><span className="dsh-lg-label">背景暗化</span><span className="dsh-lg-value">{Math.round(draft.backgroundDim * 100)}%</span></span><input className="dsh-lg-range" type="range" min="0" max="0.7" step="0.01" value={draft.backgroundDim} onChange={event => { update('backgroundDim', Number(event.target.value)) }} /></label>
 
